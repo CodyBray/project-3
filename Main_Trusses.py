@@ -66,5 +66,5 @@ def PlaneTrussStiffness( input_geometry):
 
 # Run the plane truss function 
 # Modify the name of the file to operate on your truss of interest
-[nodes,bars]=PlaneTrussStiffness('Modified_Fan_W26_With_Wind_Three_Pin.csv')
+[nodes,bars]=PlaneTrussStiffness('Modified_Fan_W26_With_Wind_Three_Pins.csv')
 
