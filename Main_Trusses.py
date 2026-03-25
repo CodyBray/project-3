@@ -1,1 +1,70 @@
 
+from ImportCSVData_Trusses import LoadData
+from DoFIndexing_Trusses import EstablishGlobalDOFNum
+from DoFIndexing_Trusses import StoreNodeDisplacements
+from Assembly_Trusses import AssembleStiffness
+from Assembly_Trusses import DefineForces
+from Solver_Trusses import ComputeDisplacements
+from Solver_Trusses import PostprocessReactions
+from Solver_Trusses import ComputeMemberForces
+from Solver_Trusses import ComputeNormalStresses
+from Solver_Trusses import ComputeBucklingLoad
+
+import Plotting_Trusses
+
+def PlaneTrussStiffness( input_geometry):
+    
+    # load the input data
+    [nodes, bars] = LoadData(input_geometry,'aisc_shapes_database_v16_0.csv','Material_Data.csv')
+        
+    # Uncomment this for plotting sooner rather than later
+    # Plotting_Trusses.PlotStructureData(nodes, bars, "index")
+
+    # determine the degrees of freedom
+    [n_unknowns,n_knowns] = EstablishGlobalDOFNum(nodes)
+    n_matrix = n_unknowns + n_knowns
+    
+    # assemble the stiffness matrix
+    K = AssembleStiffness(bars,n_matrix)
+    
+    # define the forces acting on the nodes
+    F = DefineForces(nodes,n_matrix)
+    
+    # Compute the unknown displacements
+    d = ComputeDisplacements(K, F, n_unknowns)
+
+    # Store the node displacements
+    StoreNodeDisplacements(nodes, d, n_unknowns)
+    
+    # Compute the unknown reactions
+    F = PostprocessReactions(K, d, F, n_unknowns, nodes)
+
+    # Compute internal member loads
+    ComputeMemberForces(bars)
+    
+    # Compute normal stresses of members
+    ComputeNormalStresses(bars)
+    
+    # Compute the critical buckling load of the members
+    ComputeBucklingLoad(bars)    
+    
+    # output data for sanity check
+    for node in nodes:
+        node.Print()
+    for bar in bars:
+        bar.Print()
+    
+    # Uncomment these for plotting
+    Plotting_Trusses.PlotStructureData(nodes, bars, "index")
+    Plotting_Trusses.PlotStructureData(nodes, bars, "axial")
+    Plotting_Trusses.PlotStructureData(nodes, bars, "stress")
+    Plotting_Trusses.PlotStructureData(nodes, bars, "disp_in")
+    Plotting_Trusses.PlotStructureData(nodes, bars, "buckling")
+    
+    return [nodes,bars]
+
+
+# Run the plane truss function 
+# Modify the name of the file to operate on your truss of interest
+[nodes,bars]=PlaneTrussStiffness('Modified_Fan_W26_With_Wind_Three_Pin.csv')
+
