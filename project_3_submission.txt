@@ -1,4 +1,4 @@
-PartialCredit::T
+PartialCredit::F
 Q1::20
 Q2::25
 Q3::28.78
