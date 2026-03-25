@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jul 14 14:34:19 2021
+
+@author: kendrick
+"""
+
 import numpy as np
 
 # compute unknown displacements 
@@ -69,5 +77,6 @@ def ComputeBucklingLoad(bars):
     for bar in bars :
         E=bar.E
         I=bar.It
-        Pcr= np.pi**2*E*I/(1*bar.Length())**2
+        L=bar.Length()*12
+        Pcr= np.pi**2*E*I/(1*L)**2
         bar.buckling_load = Pcr
