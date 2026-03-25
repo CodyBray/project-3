@@ -47,13 +47,13 @@ def PlaneTrussStiffness( input_geometry):
     F = PostprocessReactions(K, d, F, n_unknowns, nodes)
 
     # Compute internal member loads
-    ComputeMemberForces(bars)
+    # ComputeMemberForces()
     
     # Compute normal stresses of members
-    ComputeNormalStresses(bars)
+    # ComputeNormalStresses()
     
     # Compute the critical buckling load of the members
-    ComputeBucklingLoad(bars)    
+    # ComputeBucklingLoad()    
     
     # output data for sanity check
     for node in nodes:
@@ -62,15 +62,15 @@ def PlaneTrussStiffness( input_geometry):
         bar.Print()
     
     # Uncomment these for plotting
-    Plotting_Trusses.PlotStructureData(nodes, bars, "index")
-    Plotting_Trusses.PlotStructureData(nodes, bars, "axial")
-    Plotting_Trusses.PlotStructureData(nodes, bars, "stress")
-    Plotting_Trusses.PlotStructureData(nodes, bars, "disp_in")
-    Plotting_Trusses.PlotStructureData(nodes, bars, "buckling")
+    # Plotting_Trusses.PlotStructureData(nodes, bars, "index")
+    # Plotting_Trusses.PlotStructureData(nodes, bars, "axial")
+    # Plotting_Trusses.PlotStructureData(nodes, bars, "stress")
+    # Plotting_Trusses.PlotStructureData(nodes, bars, "disp_in")
+    # Plotting_Trusses.PlotStructureData(nodes, bars, "buckling")
     
     return [nodes,bars]
 
 
 # Run the plane truss function 
 # Modify the name of the file to operate on your truss of interest
-[nodes,bars]=PlaneTrussStiffness('Modified_Fan_W26_With_Wind_Three_Pin')
+[nodes,bars]=PlaneTrussStiffness('Gabled_Howe_6_Panel_EXAMPLE.csv')
